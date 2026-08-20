@@ -1,0 +1,44 @@
+# Python виртуальное окружение
+.venv/
+
+# IDEs (текстовые файлы, скомпилированные бинарники)
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.pyz
+*.exe
+*.dll
+*.out
+*.tgz
+*.egg
+*.log
+*.swp
+*.bak
+*.tmp
+*.pyw
+
+# IDEs (специальные файлы)
+.DS_Store
+.idea
+.vscode
+.sublime-workspace
+.pydevproject
+.tox
+
+# Игнорировать файлы с временными данными
+__pycache__/
+
+# Логи
+*logs
+
+# Cookie
+*.cookies
+
+# Остальные
+.env
+README.md
+LICENSE
+
+.pytest_cache
+.coverage
