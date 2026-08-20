@@ -9,10 +9,10 @@ on:
 # jobs — это стейджи/задачи пайплайна (аналог stages в GitLab)
 jobs:
 
-  # "test" — название джобы (придумываешь сам, используется в логах)
+  # "test" — название джобы
   test:
 
-    # На каком сервере запускать. ubuntu-latest — бесплатная виртуалка GitHub
+    # На каком сервере запускать. 
     runs-on: ubuntu-latest
     # steps — конкретные шаги внутри джобы, выполняются по порядку
     steps:
@@ -43,3 +43,29 @@ jobs:
       # --cov-report=term — вывести отчёт прямо в лог (в консоль)
       - name: Run tests
         run: pytest --cov=. --cov-report=term-missing --cov-fail-under=90
+
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: docker build -t ghcr.io/${{ github.repository }}:latest .
+
+      - name: Push Docker image
+        run: docker push ghcr.io/${{ github.repository }}:latest
+
