@@ -1,0 +1,46 @@
+# Название воркфлоу — отображается в GitHub → вкладка Actions
+name: Tests
+
+# Триггеры: когда запускать пайплайн
+on:
+  push:           # при любом пуше в любую ветку
+  pull_request:   # при открытии/обновлении пулл-реквеста
+
+# jobs — это стейджи/задачи пайплайна (аналог stages в GitLab)
+jobs:
+
+  # "test" — название джобы (придумываешь сам, используется в логах)
+  test:
+
+    # На каком сервере запускать. ubuntu-latest — бесплатная виртуалка GitHub
+    runs-on: ubuntu-latest
+
+    # steps — конкретные шаги внутри джобы, выполняются по порядку
+    steps:
+
+      # Шаг 1: скачать код репозитория на виртуалку
+      # "uses" означает "использовать готовое действие (action) из маркетплейса"
+      # actions/checkout@v4 — официальное действие от GitHub
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Шаг 2: установить Python нужной версии
+      # actions/setup-python — тоже официальное действие
+      # "with" — параметры, которые передаём в это действие
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"  
+
+      # Шаг 3: установить зависимости проекта
+      # "run" — выполнить обычную bash-команду (в отличие от "uses")
+      # "|" означает "многострочный текст" в YAML
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      # Шаг 4: запустить тесты с отчётом о покрытии
+      # --cov=. — считать покрытие для всего кода в текущей папке
+      # --cov-report=term — вывести отчёт прямо в лог (в консоль)
+      - name: Run tests
+        run: pytest --cov=. --cov-report=term-missing --cov-fail-under=90
