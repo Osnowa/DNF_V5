@@ -14,7 +14,6 @@ jobs:
 
     # На каком сервере запускать. ubuntu-latest — бесплатная виртуалка GitHub
     runs-on: ubuntu-latest
-
     # steps — конкретные шаги внутри джобы, выполняются по порядку
     steps:
 
@@ -22,13 +21,13 @@ jobs:
       # "uses" означает "использовать готовое действие (action) из маркетплейса"
       # actions/checkout@v4 — официальное действие от GitHub
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # Шаг 2: установить Python нужной версии
       # actions/setup-python — тоже официальное действие
       # "with" — параметры, которые передаём в это действие
       - name: Install Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.14"  
 

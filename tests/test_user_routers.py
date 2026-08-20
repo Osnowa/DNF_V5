@@ -1,6 +1,4 @@
 from beanie import PydanticObjectId
-from fastapi import HTTPException
-import pytest
 from database.models import User # мои Document-модели
 
 
